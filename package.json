@@ -1,7 +1,7 @@
 {
-	"name": "boilerplate",
+	"name": "todo-list",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Display and edit todo list in the data store",
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
