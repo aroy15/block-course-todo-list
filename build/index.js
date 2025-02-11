@@ -36,19 +36,20 @@ __webpack_require__.r(__webpack_exports__);
 
 function Edit() {
   const [newTodo, setNewTodo] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)();
+  const [addingTodo, setAddingTodo] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(false);
   const todos = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => {
     const todosStore = select('blocks-course-plugin/todos');
     return todosStore && todosStore.getTodos();
   });
   const actions = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('blocks-course-plugin/todos');
   const addTodo = actions && actions.addTodo;
-  const onSubmitTodo = e => {
+  const onSubmitTodo = async e => {
     e.preventDefault();
-    if (addTodo) {
-      addTodo({
-        title: newTodo,
-        completed: false
-      });
+    if (addTodo && newTodo) {
+      setAddingTodo(true);
+      await addTodo(newTodo);
+      setNewTodo('');
+      setAddingTodo(false);
     }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -77,6 +78,7 @@ function Edit() {
           value: newTodo,
           onChange: value => setNewTodo(value)
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          disabled: addingTodo,
           type: "submit",
           variant: "primary",
           children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add Todo', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)

@@ -8,6 +8,7 @@ import './editor.scss';
 
 export default function Edit() {
 	const [ newTodo, setNewTodo ] = useState();
+	const [ addingTodo, setAddingTodo ] = useState( false );
 	const todos = useSelect( ( select ) => {
 		const todosStore = select( 'blocks-course-plugin/todos' );
 		return todosStore && todosStore.getTodos();
@@ -17,10 +18,13 @@ export default function Edit() {
 
 	const addTodo = actions && actions.addTodo;
 
-	const onSubmitTodo = ( e ) => {
+	const onSubmitTodo = async ( e ) => {
 		e.preventDefault();
-		if ( addTodo ) {
-			addTodo( { title: newTodo, completed: false } );
+		if ( addTodo && newTodo ) {
+			setAddingTodo( true );
+			await addTodo( newTodo );
+			setNewTodo( '' );
+			setAddingTodo( false );
 		}
 	};
 
@@ -59,7 +63,11 @@ export default function Edit() {
 							value={ newTodo }
 							onChange={ ( value ) => setNewTodo( value ) }
 						/>
-						<Button type="submit" variant="primary">
+						<Button
+							disabled={ addingTodo }
+							type="submit"
+							variant="primary"
+						>
 							{ __( 'Add Todo', metadata.textdomain ) }
 						</Button>
 					</form>
