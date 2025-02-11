@@ -17,6 +17,7 @@ export default function Edit() {
 	const actions = useDispatch( 'blocks-course-plugin/todos' );
 
 	const addTodo = actions && actions.addTodo;
+	const toggleTodo = actions && actions.toggleTodo;
 
 	const onSubmitTodo = async ( e ) => {
 		e.preventDefault();
@@ -41,7 +42,7 @@ export default function Edit() {
 			{ todos && (
 				<>
 					<ul>
-						{ todos.map( ( todo ) => (
+						{ todos.map( ( todo, index ) => (
 							<li
 								key={ todo.id }
 								className={
@@ -50,9 +51,14 @@ export default function Edit() {
 							>
 								<CheckboxControl
 									__nextHasNoMarginBottom
+									disabled={ todo.loading }
 									label={ todo.title }
 									checked={ todo.completed }
-									onChange={ () => {} }
+									onChange={ () => {
+										if ( toggleTodo ) {
+											toggleTodo( todo, index );
+										}
+									} }
 								/>
 							</li>
 						) ) }

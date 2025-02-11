@@ -43,6 +43,7 @@ function Edit() {
   });
   const actions = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('blocks-course-plugin/todos');
   const addTodo = actions && actions.addTodo;
+  const toggleTodo = actions && actions.toggleTodo;
   const onSubmitTodo = async e => {
     e.preventDefault();
     if (addTodo && newTodo) {
@@ -61,13 +62,18 @@ function Edit() {
       children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Please make sure the store registered plugin is activated', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)
     }), todos && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("ul", {
-        children: todos.map(todo => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+        children: todos.map((todo, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
           className: todo.completed ? 'todo-completed' : '',
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.CheckboxControl, {
             __nextHasNoMarginBottom: true,
+            disabled: todo.loading,
             label: todo.title,
             checked: todo.completed,
-            onChange: () => {}
+            onChange: () => {
+              if (toggleTodo) {
+                toggleTodo(todo, index);
+              }
+            }
           })
         }, todo.id))
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("form", {
